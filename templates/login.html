@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In — T&P Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#020509;
+    --royal:#3B82F6;
+    --electric:#38BDF8;
+    --purple:#A78BFA;
+    --bg:#0A0E17;
+    --surface:#111827;
+    --white:#0F1521;
+    --ink:#E8ECF6;
+    --muted:#8B93A8;
+    --border:rgba(255,255,255,.10);
+    --sidebar-w:96px;
+    --sidebar-w-lg:230px;
+    --radius-lg:22px;
+    --radius-md:14px;
+    --radius-sm:10px;
+    --ease:cubic-bezier(.4,0,.2,1);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family:'Inter',sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    overflow-x:hidden;
+    min-height:100vh;
+  }
+
+  h1,h2,h3{font-family:'Manrope',sans-serif;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  a{text-decoration:none;color:inherit;}
+  button{font-family:inherit;cursor:pointer;}
+
+  :focus-visible{outline:2px solid var(--electric);outline-offset:2px;border-radius:6px;}
+
+  /* ================= SIDEBAR (matches homepage) ================= */
+  .sidebar{
+    position:fixed;
+    top:0;left:0;
+    height:100vh;
+    width:var(--sidebar-w);
+    background:linear-gradient(180deg,#05070D 0%, #080D18 60%, #060A12 100%);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:28px 0 22px;
+    z-index:100;
+    transition:width .35s cubic-bezier(.4,0,.2,1);
+    overflow:hidden;
+    border-right:1px solid rgba(255,255,255,.04);
+  }
+  .sidebar:hover{width:var(--sidebar-w-lg);}
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
+    padding:0 24px 26px;
+    margin-bottom:18px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .brand-mark{
+    flex:0 0 auto;
+    width:38px;height:38px;
+    border-radius:11px;
+    background:linear-gradient(135deg,var(--electric),var(--purple));
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:14px;color:#fff;
+    font-family:'Manrope',sans-serif;
+    box-shadow:0 6px 18px rgba(56,189,248,.35);
+  }
+  .brand-text{white-space:nowrap;opacity:0;transform:translateX(-6px);transition:opacity .25s ease .05s, transform .25s ease .05s;}
+  .sidebar:hover .brand-text{opacity:1;transform:translateX(0);}
+  .brand-text .name{color:#fff;font-weight:700;font-size:14.5px;letter-spacing:.2px;}
+  .brand-text .sub{color:#7C8AAE;font-size:11px;margin-top:2px;}
+
+  .nav-list{
+    list-style:none;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    padding:0 12px;
+    flex:1;
+  }
+  .nav-item{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:11px 12px;
+    border-radius:12px;
+    color:#8FA0C4;
+    font-size:13.5px;
+    font-weight:500;
+    white-space:nowrap;
+    position:relative;
+    transition:transform .25s cubic-bezier(.4,0,.2,1), background .25s ease, color .25s ease;
+  }
+  .nav-item > a{display:flex;align-items:center;gap:14px;color:inherit;width:100%;}
+  .nav-item .ic{
+    flex:0 0 auto;
+    width:20px;height:20px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .nav-item .ic svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.7;}
+  .nav-item .label{opacity:0;transform:translateX(-4px);transition:opacity .2s ease, transform .2s ease;}
+  .sidebar:hover .nav-item .label{opacity:1;transform:translateX(0);}
+
+  .nav-item:hover{transform:translateX(4px);color:#E7ECFA;background:rgba(255,255,255,.05);}
+  .nav-item.active{
+    background:linear-gradient(90deg, rgba(37,99,235,.9), rgba(139,92,246,.85));
+    color:#fff;
+    box-shadow:0 8px 20px -6px rgba(56,189,248,.45);
+  }
+  .nav-item.active:hover{transform:translateX(4px);}
+
+  .nav-bottom{
+    list-style:none;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    padding:14px 12px 0;
+    border-top:1px solid rgba(255,255,255,.08);
+  }
+
+  .mobile-topbar{
+    display:none;
+    position:fixed;
+    top:0;left:0;right:0;
+    height:60px;
+    background:var(--navy);
+    align-items:center;
+    padding:0 20px;
+    color:#fff;
+    font-weight:700;
+    z-index:200;
+    gap:10px;
+  }
+
+  /* ================= MAIN ================= */
+  .main{
+    margin-left:var(--sidebar-w);
+    position:relative;
+    min-height:100vh;
+    transition:margin-left .35s var(--ease);
+  }
+
+  .auth-wrap{
+    min-height:100vh;
+    display:grid;
+    grid-template-columns:1.05fr 1fr;
+    position:relative;
+  }
+
+  .auth-visual{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:64px 60px;
+    overflow:hidden;
+    background:
+      radial-gradient(700px 500px at 15% 20%, rgba(37,99,235,0.16), transparent 60%),
+      radial-gradient(600px 460px at 85% 80%, rgba(139,92,246,0.16), transparent 60%);
+  }
+
+  .auth-visual::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+    background-size:42px 42px;
+    mask-image:radial-gradient(650px 500px at 30% 40%, black, transparent 75%);
+    pointer-events:none;
+  }
+
+  .glow-orb{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(60px);
+    opacity:.45;
+    pointer-events:none;
+  }
+  .glow-orb.one{width:320px;height:320px;background:radial-gradient(circle,var(--electric),transparent 70%);top:-60px;left:-60px;}
+  .glow-orb.two{width:360px;height:360px;background:radial-gradient(circle,var(--purple),transparent 70%);bottom:-100px;right:-60px;}
+
+  .visual-eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    color:var(--electric);font-weight:700;font-size:13px;
+    margin-bottom:18px;position:relative;z-index:2;
+  }
+  .visual-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,var(--royal),var(--electric));}
+
+  .visual-heading{
+    font-size:42px;font-weight:800;line-height:1.12;
+    color:var(--ink);margin:0 0 14px 0;
+    position:relative;z-index:2;max-width:480px;
+  }
+  .visual-heading span{
+    background:linear-gradient(90deg,var(--royal),var(--purple));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+
+  .visual-sub{
+    font-size:16px;color:var(--muted);line-height:1.6;
+    max-width:400px;margin:0 0 44px 0;position:relative;z-index:2;
+  }
+
+  .floating-cards{
+    position:relative;z-index:2;
+    display:flex;flex-direction:column;gap:14px;max-width:360px;
+  }
+
+  .float-card{
+    display:flex;align-items:center;gap:14px;
+    background:rgba(255,255,255,.04);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:var(--radius-md);
+    padding:14px 16px;
+    box-shadow:0 20px 50px -20px rgba(0,0,0,.55);
+    animation:floatY 6s ease-in-out infinite;
+  }
+  .float-card:nth-child(2){animation-delay:-1.5s;margin-left:34px;}
+  .float-card:nth-child(3){animation-delay:-3s;}
+  .float-card:nth-child(4){animation-delay:-4.5s;margin-left:34px;}
+
+  @keyframes floatY{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+
+  .float-icon{width:40px;height:40px;min-width:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;}
+  .float-icon.blue{background:linear-gradient(135deg,#1E3A5F,#173154);}
+  .float-icon.sky{background:linear-gradient(135deg,#123A4E,#0E2E40);}
+  .float-icon.violet{background:linear-gradient(135deg,#2E2350,#251C42);}
+  .float-icon.green{background:linear-gradient(135deg,#123A26,#0F2E1F);}
+  .float-icon svg{width:20px;height:20px;}
+
+  .float-title{font-size:13.5px;font-weight:700;color:var(--ink);}
+  .float-desc{font-size:12px;color:var(--muted);margin-top:1px;}
+
+  .auth-panel{
+    display:flex;align-items:center;justify-content:center;
+    padding:48px 56px;position:relative;
+  }
+
+  .auth-card{
+    width:100%;max-width:420px;
+    background:rgba(17,24,39,.82);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:var(--radius-lg);
+    box-shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 20px 60px -24px rgba(0,0,0,.65);
+    padding:36px 34px 30px 34px;
+    animation:cardIn .6s var(--ease) both;
+  }
+
+  @keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+
+  .card-kicker{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12px;font-weight:700;letter-spacing:.4px;
+    color:var(--electric);margin-bottom:14px;
+  }
+  .card-kicker .mark{
+    width:24px;height:24px;border-radius:7px;
+    background:linear-gradient(135deg,var(--royal),var(--purple));
+    display:flex;align-items:center;justify-content:center;
+  }
+  .card-kicker .mark svg{width:13px;height:13px;}
+
+  .card-title{font-size:24px;font-weight:800;color:var(--ink);margin:0 0 4px 0;}
+  .card-desc{font-size:13.5px;color:var(--muted);margin:0 0 24px 0;}
+
+  .field-group{margin-bottom:16px;}
+
+  .field-label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:6px;}
+
+  .field-input-wrap{position:relative;display:flex;align-items:center;}
+  .field-input-wrap svg{position:absolute;left:14px;width:17px;height:17px;stroke:var(--muted);fill:none;pointer-events:none;}
+
+  .field-input{
+    width:100%;padding:12px 14px 12px 40px;
+    border-radius:var(--radius-sm);
+    border:1.5px solid var(--border);
+    background:var(--white);
+    font-size:13.5px;color:var(--ink);
+    transition:border-color .2s var(--ease), box-shadow .2s var(--ease);
+  }
+  .field-input::placeholder{color:#5B6478;}
+  .field-input:focus{outline:none;border-color:var(--royal);box-shadow:0 0 0 4px rgba(59,130,246,.18);}
+
+  .field-toggle{
+    position:absolute;right:12px;background:none;border:none;cursor:pointer;
+    padding:4px;display:flex;color:var(--muted);
+  }
+  .field-toggle svg{position:static;width:17px;height:17px;}
+
+  .form-row-between{display:flex;align-items:center;justify-content:space-between;margin:2px 0 22px 0;}
+
+  .checkbox-line{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);cursor:pointer;}
+  .checkbox-line input{width:16px;height:16px;accent-color:var(--royal);cursor:pointer;}
+
+  .link-muted{font-size:12.5px;font-weight:600;color:var(--electric);}
+  .link-muted:hover{color:var(--purple);}
+
+  .btn-gradient{
+    width:100%;border:none;cursor:pointer;
+    padding:13.5px 18px;border-radius:var(--radius-sm);
+    background:linear-gradient(90deg,var(--royal),var(--purple));
+    color:#fff;font-size:14px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    box-shadow:0 14px 30px -12px rgba(37,99,235,.55);
+    transition:transform .2s var(--ease), box-shadow .2s var(--ease);
+    font-family:inherit;
+  }
+  .btn-gradient:hover{transform:translateY(-2px);box-shadow:0 18px 36px -12px rgba(37,99,235,.6);}
+  .btn-gradient svg{width:16px;height:16px;}
+
+  .role-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0 4px 0;}
+  .role-card{
+    border:1.5px solid var(--border);border-radius:var(--radius-sm);
+    padding:10px 12px;display:flex;align-items:center;gap:9px;
+    font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;
+    transition:border-color .2s var(--ease), background .2s var(--ease), color .2s var(--ease);
+  }
+  .role-card:hover{border-color:var(--royal);color:var(--electric);background:rgba(59,130,246,.08);}
+  .role-card svg{width:16px;height:16px;}
+
+  .card-footer-text{text-align:center;font-size:13px;color:var(--muted);margin-top:20px;}
+  .card-footer-text a{color:var(--electric);font-weight:700;}
+  .card-footer-text a:hover{color:var(--purple);}
+
+  .page-footer{
+    position:absolute;bottom:22px;left:0;right:0;
+    text-align:center;font-size:11.5px;color:var(--muted);z-index:2;
+  }
+
+  /* ================= RESPONSIVE ================= */
+  @media (max-width:1080px){
+    .auth-wrap{grid-template-columns:1fr;}
+    .auth-visual{display:none;}
+    .auth-panel{padding:40px 24px;min-height:100vh;}
+  }
+
+  @media (max-width:640px){
+    :root{--sidebar-w:0px;}
+    .sidebar{width:0;}
+    .sidebar:hover{width:0;}
+    .main{margin-left:0;padding-top:60px;}
+    .mobile-topbar{display:flex;}
+    .auth-panel{padding:28px 16px;}
+    .auth-card{padding:26px 20px 22px 20px;border-radius:18px;}
+    .role-options{grid-template-columns:1fr;}
+    .card-title{font-size:21px;}
+    .page-footer{position:static;margin-top:18px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="mobile-topbar">
+  <div class="brand-mark" style="width:30px;height:30px;font-size:11px;">T&P</div>
+  T&P Portal
+</div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="brand-mark">T&P</div>
+    <div class="brand-text">
+      <div class="name">T&P PORTAL</div>
+      <div class="sub">Training &amp; Placement</div>
+    </div>
+  </div>
+
+  <ul class="nav-list">
+    <li class="nav-item"><a href="{% url 'index' %}"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg></span><span class="label">Home</span></a></li>
+    <li class="nav-item"><a href="#"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M4.5 20c1.6-3.6 4.6-5.4 7.5-5.4S17.9 16.4 19.5 20"/></svg></span><span class="label">Student Placement Profile</span></a></li>
+    <li class="nav-item"><a href="#"><span class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="1.2"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg></span><span class="label">Company Details</span></a></li>
+    <li class="nav-item"><a href="#"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span><span class="label">Job Drives</span></a></li>
+    <li class="nav-item"><a href="#"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 6 8 7 8-7"/></svg></span><span class="label">Contact Us</span></a></li>
+
+  </ul>
+
+  <ul class="nav-bottom">
+    <li class="nav-item active"><a href="{% url 'login' %}"><span class="ic"><svg viewBox="0 0 24 24"><path d="M15 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg></span><span class="label">Login</span></a></li>
+    <li class="nav-item"><a href="{% url 'register' %}"><span class="ic"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg></span><span class="label">Register</span></a></li>
+  </ul>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="auth-wrap">
+
+    <!-- LEFT VISUAL -->
+    <section class="auth-visual">
+      <div class="glow-orb one"></div>
+      <div class="glow-orb two"></div>
+
+      <div class="visual-eyebrow"><span class="dot"></span> VSGOI Training &amp; Placement Cell</div>
+      <h1 class="visual-heading">Welcome <span>Back</span></h1>
+      <p class="visual-sub">Continue your placement journey with VSGOI.</p>
+
+      <div class="floating-cards">
+        <div class="float-card">
+          <div class="float-icon blue">
+            <svg viewBox="0 0 24 24" stroke="#5EA1F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/></svg>
+          </div>
+          <div><div class="float-title">Job Opportunities</div><div class="float-desc">124 new drives open this week</div></div>
+        </div>
+
+        <div class="float-card">
+          <div class="float-icon sky">
+            <svg viewBox="0 0 24 24" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+          </div>
+          <div><div class="float-title">Applications</div><div class="float-desc">Track every stage in real time</div></div>
+        </div>
+
+        <div class="float-card">
+          <div class="float-icon violet">
+            <svg viewBox="0 0 24 24" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>
+          </div>
+          <div><div class="float-title">Career Growth</div><div class="float-desc">Personalised skill recommendations</div></div>
+        </div>
+
+        <div class="float-card">
+          <div class="float-icon green">
+            <svg viewBox="0 0 24 24" stroke="#4ADE80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+          </div>
+          <div><div class="float-title">Placement</div><div class="float-desc">1,842 students placed this year</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT LOGIN CARD -->
+    <section class="auth-panel">
+      <div class="auth-card">
+        <div class="card-kicker">
+          <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 4.5-9 4.5-9-4.5L12 3z"/></svg></span>
+          T&amp;P PORTAL
+        </div>
+
+        <h2 class="card-title">Sign in to your account</h2>
+        <p class="card-desc">Enter your details to access your placement dashboard.</p>
+
+        <form id="loginForm" novalidate>
+          <div class="field-group">
+            <label class="field-label" for="loginId">Email / Username</label>
+            <div class="field-input-wrap">
+              <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg>
+              <input class="field-input" type="text" id="loginId" name="loginId" placeholder="you@vsgoi.edu.in" required>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="loginPassword">Password</label>
+            <div class="field-input-wrap">
+              <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+              <input class="field-input" type="password" id="loginPassword" name="loginPassword" placeholder="Enter your password" required>
+              <button type="button" class="field-toggle" aria-label="Show password" data-toggle-for="loginPassword">
+                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-row-between">
+            <label class="checkbox-line"><input type="checkbox" name="remember"> Remember me</label>
+            <a href="#" class="link-muted">Forgot Password?</a>
+          </div>
+
+          <button type="submit" class="btn-gradient">
+            Sign In
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+
+        <div class="role-options">
+          <div class="role-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c1.3-3.5 4-5.2 7-5.2s5.7 1.7 7 5.2"/></svg>
+            Student Login
+          </div>
+          <div class="role-card">
+            <a href="{% url 'admin:login' %}" style="display:flex;align-items:center;gap:9px;color:inherit;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="16" height="11" rx="1.5"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg>
+            Placement Cell Login
+          </div>
+        </div>
+
+        <p class="card-footer-text">Don't have an account? <a href="{% url 'register' %}">Create Account</a></p>
+      </div>
+
+      <p class="page-footer">© 2026 T&amp;P Portal — Training &amp; Placement Cell</p>
+    </section>
+
+  </div>
+</main>
+
+<script>
+  document.querySelectorAll('.field-toggle').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var input = document.getElementById(btn.getAttribute('data-toggle-for'));
+      if(!input) return;
+      input.type = input.type === 'password' ? 'text' : 'password';
+    });
+  });
+  document.getElementById('loginForm').addEventListener('submit', function(e){ e.preventDefault(); });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Drives — T&P Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body style="margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;background:#070B14;color:#F8FAFC;overflow-x:hidden;min-height:100vh;">
+
+<!-- MOBILE TOPBAR -->
+<div id="mobileTopbar" style="display:none;position:fixed;top:0;left:0;right:0;height:60px;background:#081225;align-items:center;padding:0 20px;color:#fff;font-weight:700;z-index:200;gap:10px;box-shadow:0 2px 14px rgba(0,0,0,.4);">
+  <div style="width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#38BDF8,#8B5CF6);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;font-family:'Manrope',sans-serif;color:#fff;">T&P</div>
+  <span style="font-family:'Manrope',sans-serif;font-size:14.5px;">T&amp;P Portal</span>
+  <button id="mobileMenuBtn" style="margin-left:auto;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;width:34px;height:34px;color:#fff;font-size:16px;cursor:pointer;">☰</button>
+</div>
+
+<!-- SIDEBAR -->
+<nav id="sidebar" style="position:fixed;top:0;left:0;height:100vh;width:230px;background:linear-gradient(180deg,#081225 0%, #0B1830 60%, #0A1526 100%);display:flex;flex-direction:column;align-items:center;padding:28px 0 22px;z-index:150;transition:width .35s cubic-bezier(.4,0,.2,1);overflow:hidden;box-sizing:border-box;">
+
+  <div style="display:flex;align-items:center;gap:12px;width:100%;padding:0 24px 26px;margin-bottom:18px;border-bottom:1px solid rgba(255,255,255,.08);box-sizing:border-box;">
+    <div style="flex:0 0 auto;width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#38BDF8,#8B5CF6);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff;font-family:'Manrope',sans-serif;box-shadow:0 6px 18px rgba(56,189,248,.35);">T&P</div>
+    <div class="sb-label" style="white-space:nowrap;opacity:1;transition:opacity .25s ease .05s;">
+      <div style="color:#fff;font-weight:700;font-size:14.5px;letter-spacing:.2px;">T&amp;P PORTAL</div>
+      <div style="color:#7C8AAE;font-size:11px;margin-top:2px;">Training &amp; Placement</div>
+    </div>
+  </div>
+
+  <ul id="navList" style="list-style:none;width:100%;display:flex;flex-direction:column;gap:4px;padding:0 12px;flex:1;margin:0;box-sizing:border-box;"></ul>
+
+  <ul id="navBottom" style="list-style:none;width:100%;display:flex;flex-direction:column;gap:4px;padding:14px 12px 0;border-top:1px solid rgba(255,255,255,.08);margin:0;box-sizing:border-box;"></ul>
+</nav>
+
+<!-- MAIN -->
+<main id="main" style="margin-left:230px;position:relative;min-height:100vh;background:radial-gradient(900px 500px at 85% -10%, rgba(139,92,246,.20), transparent 60%),radial-gradient(700px 500px at 10% 10%, rgba(37,99,235,.16), transparent 55%),#070B14;box-sizing:border-box;">
+
+  <!-- HEADER -->
+  <section style="padding:64px 5vw 10px;">
+    <div style="display:flex;align-items:center;gap:10px;color:#2563EB;font-size:13px;font-weight:600;margin-bottom:18px;">
+      <span style="width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,#38BDF8,#8B5CF6);"></span>
+      T&amp;P PORTAL · OPPORTUNITIES
+    </div>
+    <h1 style="font-family:'Manrope',sans-serif;font-weight:800;font-size:clamp(34px,4.6vw,56px);line-height:1.05;letter-spacing:-.02em;color:#F8FAFC;margin:0;">
+      Job <span style="background:linear-gradient(100deg,#2563EB,#8B5CF6 65%,#38BDF8);-webkit-background-clip:text;background-clip:text;color:transparent;">Drives</span>
+    </h1>
+    <p style="margin-top:16px;max-width:560px;font-size:15.5px;color:#94A3B8;line-height:1.65;">Discover upcoming campus recruitment drives and explore opportunities that match your profile.</p>
+  </section>
+
+  <!-- STATS -->
+  <section id="statsGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:20px 5vw 10px;box-sizing:border-box;"></section>
+
+  <!-- FILTERS -->
+  <section style="padding:34px 5vw 10px;box-sizing:border-box;">
+    <div style="background:rgba(15,23,42,.72);border:1px solid rgba(148,163,184,.16);border-radius:20px;padding:26px 24px;backdrop-filter:blur(10px);box-shadow:0 16px 34px -16px rgba(0,0,0,.5);">
+      <h3 style="font-family:'Manrope',sans-serif;font-size:16px;font-weight:700;color:#F1F5F9;margin:0 0 18px;">Search Job Drives</h3>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;" id="filterGrid">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <label style="font-size:12px;color:#94A3B8;font-weight:600;">Company</label>
+          <input id="fCompany" type="text" placeholder="Any company" style="background:#0B1830;border:1px solid rgba(148,163,184,.22);border-radius:10px;padding:10px 12px;color:#F8FAFC;font-size:13.5px;font-family:'Inter',sans-serif;outline:none;">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <label style="font-size:12px;color:#94A3B8;font-weight:600;">Job Role</label>
+          <input id="fRole" type="text" placeholder="Any role" style="background:#0B1830;border:1px solid rgba(148,163,184,.22);border-radius:10px;padding:10px 12px;color:#F8FAFC;font-size:13.5px;font-family:'Inter',sans-serif;outline:none;">
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
+        <button id="btnSearch" style="padding:12px 24px;border-radius:12px;font-size:14px;font-weight:600;background:linear-gradient(100deg,#2563EB,#8B5CF6);color:#fff;border:none;cursor:pointer;box-shadow:0 10px 24px -8px rgba(37,99,235,.55);font-family:'Inter',sans-serif;">Search</button>
+        <button id="btnClear" style="padding:12px 24px;border-radius:12px;font-size:14px;font-weight:600;background:rgba(148,163,184,.08);color:#EAF0FF;border:1px solid rgba(148,163,184,.22);cursor:pointer;font-family:'Inter',sans-serif;">Clear Filters</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOB CARDS -->
+  <section style="padding:34px 5vw 20px;box-sizing:border-box;">
+    <div id="jobGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;"></div>
+    <div id="noResults" style="display:none;text-align:center;padding:60px 20px;color:#94A3B8;font-size:15px;font-weight:600;">No job drives found</div>
+  </section>
+
+  <div style="text-align:center;padding:26px 5vw 46px;font-size:12.5px;color:#7F8DA6;">© 2026 T&amp;P Portal — Training &amp; Placement Cell</div>
+</main>
+
+<!-- MODAL -->
+<div id="modalOverlay" style="display:none;position:fixed;inset:0;background:rgba(3,7,18,.72);backdrop-filter:blur(4px);z-index:500;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;">
+  <div id="modalPanel" style="background:linear-gradient(160deg,#0B1830,#081225);border:1px solid rgba(148,163,184,.2);border-radius:22px;max-width:600px;width:100%;max-height:86vh;overflow-y:auto;padding:30px;box-shadow:0 40px 90px -20px rgba(37,99,235,.4);box-sizing:border-box;">
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+
+
+
+
+{{ drives|json_script:"drives-data" }}
+
+<script>
+/* ---------- DATABASE DATA ---------- */
+var drives = JSON.parse(
+  document.getElementById('drives-data').textContent
+);
+
+/* ---------- NAVIGATION ---------- */
+var navItems = [
+  {label:'Home', href:'{% url "index" %}', active:false, icon:'<path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/>'},
+  {label:'Student Placement Profile', href:'{% url "studentprofile" %}', active:false, icon:'<circle cx="12" cy="8" r="3.4"/><path d="M4.5 20c1.6-3.6 4.6-5.4 7.5-5.4S17.9 16.4 19.5 20"/>'},
+  {label:'Company Details', href:'{% url "companydetails" %}', active:false, icon:'<rect x="4" y="9" width="16" height="11" rx="1.2"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/>'},
+  {label:'Job Drives', href:'{% url "jobdrives" %}', active:true, icon:'<path d="M4 7h16M4 12h16M4 17h10"/>'},
+  {label:'Applications', href:'#', active:false, icon:'<rect x="5" y="3" width="14" height="18" rx="1.4"/><path d="M9 8h6M9 12h6M9 16h3"/>'},
+  {label:'Selection Records', href:'#', active:false, icon:'<path d="M12 3 4 6.5v5C4 15.7 7.4 19.8 12 21c4.6-1.2 8-5.3 8-9.5v-5L12 3Z"/><path d="m9 12 2 2 4-4"/>'},
+  {label:'Contact Us', href:'{% url "contact" %}', active:false, icon:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 6 8 7 8-7"/>'}
+];
+
+var navBottomItems = [
+  {label:'Login', href:'{% url "login" %}', active:false, icon:'<path d="M15 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/>'},
+  {label:'Register', href:'{% url "register" %}', active:false, icon:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/>'}
+];
+
+/* ---------- COLORS ---------- */
+var statusColor = {
+  'Open':{bg:'rgba(56,189,248,.15)', fg:'#38BDF8'},
+  'Upcoming':{bg:'rgba(37,99,235,.18)', fg:'#93C5FD'},
+  'Closed':{bg:'rgba(148,163,184,.15)', fg:'#94A3B8'}
+};
+
+/* ---------- RENDER SIDEBAR ---------- */
+function navItemHTML(item){
+  var activeStyle = item.active
+    ? 'background:linear-gradient(90deg, rgba(37,99,235,.9), rgba(139,92,246,.85));color:#fff;box-shadow:0 8px 20px -6px rgba(56,189,248,.45);'
+    : 'color:#8FA0C4;background:transparent;';
+
+  return '<li><a href="'+item.href+'" style="text-decoration:none;display:flex;align-items:center;gap:14px;padding:11px 12px;border-radius:12px;font-size:13.5px;font-weight:500;white-space:nowrap;transition:transform .25s ease,background .25s ease,color .25s ease;'+activeStyle+'" '+
+    (item.active ? 'data-active="1"' : '')+'>'+
+    '<span style="flex:0 0 auto;width:20px;height:20px;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" style="width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.7;">'+item.icon+'</svg></span>'+
+    '<span class="sb-label" style="opacity:1;">'+item.label+'</span>'+
+  '</a></li>';
+}
+
+document.getElementById('navList').innerHTML = navItems.map(navItemHTML).join('');
+document.getElementById('navBottom').innerHTML = navBottomItems.map(navItemHTML).join('');
+
+
+/* ---------- SIDEBAR ---------- */
+var sidebar = document.getElementById('sidebar');
+
+sidebar.addEventListener('mouseenter', function(){
+  if(window.innerWidth <= 640) return;
+  sidebar.style.width = '230px';
+});
+
+sidebar.addEventListener('mouseleave', function(){
+  if(window.innerWidth <= 640) return;
+  sidebar.style.width = '230px';
+});
+
+var menuOpen = false;
+document.getElementById('mobileMenuBtn').addEventListener('click', function(){
+  menuOpen = !menuOpen;
+  if(menuOpen){
+    sidebar.style.display = 'flex';
+    sidebar.style.width = '230px';
+  }else{
+    sidebar.style.display = 'none';
+  }
+});
+
+/* ---------- DYNAMIC STATS ---------- */
+function renderStats(list){
+  var open = list.filter(function(d){ return d.status === 'Open'; }).length;
+  var upcoming = list.filter(function(d){ return d.status === 'Upcoming'; }).length;
+  var closed = list.filter(function(d){ return d.status === 'Closed'; }).length;
+  var vacancies = list.reduce(function(total,d){ return total + Number(d.openings || 0); },0);
+
+  var stats = [
+    {num:open, label:'Open Job Drives'},
+    {num:upcoming, label:'Upcoming Drives'},
+    {num:closed, label:'Closed Drives'},
+    {num:vacancies, label:'Total Vacancies'}
+  ];
+
+  document.getElementById('statsGrid').innerHTML = stats.map(function(s){
+    return '<div style="background:linear-gradient(140deg,#0B1830,#0F1E3D 60%,#17224a);border-radius:18px;padding:22px 20px;border:1px solid rgba(148,163,184,.14);box-shadow:0 14px 30px -14px rgba(0,0,0,.5);">'+
+      '<div style="font-family:\'Manrope\',sans-serif;font-size:clamp(26px,2.6vw,36px);font-weight:800;background:linear-gradient(100deg,#fff,#38BDF8);-webkit-background-clip:text;background-clip:text;color:transparent;">'+s.num+'</div>'+
+      '<div style="margin-top:6px;font-size:13px;color:#9FB0D6;font-weight:500;">'+s.label+'</div></div>';
+  }).join('');
+}
+renderStats(drives);
+
+/* ---------- JOB CARD ---------- */
+function jobCardHTML(drive,index){
+  var company = drive.company || {};
+  var sc = statusColor[drive.status] || statusColor['Upcoming'];
+  var logo = company.logo || (company.name || 'CO').substring(0,2).toUpperCase();
+
+  return '<div style="background:rgba(15,23,42,.78);border:1px solid rgba(148,163,184,.14);border-radius:18px;padding:24px;box-shadow:0 16px 34px -16px rgba(0,0,0,.5);transition:transform .3s ease,box-shadow .3s ease;box-sizing:border-box;" '+
+    'onmouseover="this.style.transform=\'translateY(-6px)\';this.style.boxShadow=\'0 22px 40px -16px rgba(37,99,235,.3)\';" '+
+    'onmouseout="this.style.transform=\'translateY(0)\';this.style.boxShadow=\'0 16px 34px -16px rgba(0,0,0,.5)\';">'+
+      '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">'+
+        '<div style="display:flex;align-items:center;gap:12px;">'+
+          '<div style="width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,#2563EB,#8B5CF6);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;font-family:\'Manrope\',sans-serif;">'+logo+'</div>'+
+          '<div><div style="font-family:\'Manrope\',sans-serif;font-weight:700;font-size:15.5px;color:#F1F5F9;">'+(company.name || 'Company')+'</div>'+
+          '<div style="font-size:12.5px;color:#94A3B8;">'+(company.industry || 'Industry not provided')+'</div></div>'+
+        '</div>'+
+        '<span style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;background:'+sc.bg+';color:'+sc.fg+';white-space:nowrap;">'+(drive.status || 'Upcoming')+'</span>'+
+      '</div>'+
+      '<div style="margin-top:16px;font-size:15px;font-weight:700;color:#F8FAFC;">'+(drive.job_title || 'Job Role')+'</div>'+
+      '<div style="margin-top:10px;display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:#94A3B8;">'+
+        '<div>📍 '+(company.location || 'Location not provided')+'</div>'+
+        '<div>💰 '+(drive.ctc || 'CTC not provided')+' &nbsp;·&nbsp; '+(drive.openings || 0)+' vacancies</div>'+
+        '<div>🎓 '+(drive.eligibility || 'Eligibility not provided')+'</div>'+
+        '<div>🗓 Drive: '+(drive.drive_date || 'Not provided')+'</div>'+
+        '<div>⏳ Apply by: '+(drive.last_date || 'Not provided')+'</div>'+
+      '</div>'+
+      '<div style="margin-top:12px;font-size:12.5px;color:#8190A9;line-height:1.5;">'+(drive.description || '')+'</div>'+
+      '<div style="display:flex;gap:10px;margin-top:18px;">'+
+        '<button onclick="openModal('+index+')" style="flex:1;padding:10px 14px;border-radius:10px;font-size:13px;font-weight:600;background:rgba(148,163,184,.08);color:#EAF0FF;border:1px solid rgba(148,163,184,.22);cursor:pointer;font-family:\'Inter\',sans-serif;">View Details</button>'+
+        (drive.status !== 'Closed' ? '<button onclick="openModal('+index+')" style="flex:1;padding:10px 14px;border-radius:10px;font-size:13px;font-weight:600;background:linear-gradient(100deg,#2563EB,#8B5CF6);color:#fff;border:none;cursor:pointer;box-shadow:0 8px 18px -8px rgba(37,99,235,.5);font-family:\'Inter\',sans-serif;">Apply Now</button>' : '')+
+      '</div>'+
+    '</div>';
+}
+
+function renderJobs(list){
+  var grid = document.getElementById('jobGrid');
+  var noRes = document.getElementById('noResults');
+
+  if(list.length === 0){
+    grid.style.display = 'none';
+    noRes.style.display = 'block';
+    return;
+  }
+
+  grid.style.display = 'grid';
+  noRes.style.display = 'none';
+  grid.innerHTML = list.map(function(drive){
+    var realIdx = drives.indexOf(drive);
+    return jobCardHTML(drive,realIdx);
+  }).join('');
+}
+
+renderJobs(drives);
+
+/* ---------- MODAL ---------- */
+function modalRow(label,value){
+  return '<div style="margin-bottom:14px;"><div style="font-size:11.5px;font-weight:700;color:#38BDF8;text-transform:uppercase;letter-spacing:.03em;margin-bottom:4px;">'+label+'</div>'+
+    '<div style="font-size:13.5px;color:#CBD5E1;line-height:1.6;">'+(value || 'Not provided')+'</div></div>';
+}
+
+function openModal(index) {
+
+    var drive = drives[index];
+    var company = drive.company || {};
+    var body = document.getElementById('modalBody');
+
+    body.innerHTML =
+
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:18px;">' +
+
+            '<div>' +
+
+                '<div style="font-family:Manrope,sans-serif;font-size:20px;font-weight:800;color:#F8FAFC;">' +
+                    drive.job_title +
+                '</div>' +
+
+                '<div style="font-size:13.5px;color:#94A3B8;margin-top:4px;">' +
+                    company.name +
+                    ' · ' +
+                    company.industry +
+                '</div>' +
+
+            '</div>' +
+
+            '<button onclick="closeModal()" style="' +
+                'background:rgba(148,163,184,.1);' +
+                'border:1px solid rgba(148,163,184,.2);' +
+                'color:#EAF0FF;' +
+                'width:32px;height:32px;' +
+                'border-radius:9px;' +
+                'cursor:pointer;font-size:15px;' +
+            '">' +
+                '✕' +
+            '</button>' +
+
+        '</div>' +
+
+        modalRow('Company', company.name) +
+        modalRow('Job Description', drive.description) +
+        modalRow('CTC', drive.ctc) +
+        modalRow('Openings', String(drive.openings || 0)) +
+        modalRow('Eligibility', drive.eligibility) +
+        modalRow('Recruitment Process', drive.process) +
+        modalRow('Selection Rounds', drive.rounds) +
+        modalRow('Location', company.location) +
+        modalRow('Drive Date', drive.drive_date) +
+        modalRow('Application Deadline', drive.last_date) +
+        modalRow('Status', drive.status) +
+
+        '<div style="display:flex;gap:12px;margin-top:22px;">' +
+
+            '<button onclick="closeModal()" style="' +
+                'flex:1;padding:12px 14px;border-radius:10px;' +
+                'font-size:13.5px;font-weight:600;' +
+                'background:rgba(148,163,184,.08);' +
+                'color:#EAF0FF;' +
+                'border:1px solid rgba(148,163,184,.22);' +
+                'cursor:pointer;font-family:Inter,sans-serif;' +
+            '">' +
+                'Close' +
+            '</button>' +
+
+            (drive.status !== 'Closed'
+                ? '<button onclick="closeModal()" style="' +
+                    'flex:1;padding:12px 14px;border-radius:10px;' +
+                    'font-size:13.5px;font-weight:600;' +
+                    'background:linear-gradient(100deg,#2563EB,#8B5CF6);' +
+                    'color:#fff;border:none;cursor:pointer;' +
+                    'box-shadow:0 8px 18px -8px rgba(37,99,235,.5);' +
+                    'font-family:Inter,sans-serif;' +
+                  '">' +
+                    'Apply Now' +
+                  '</button>'
+                : ''
+            ) +
+
+        '</div>';
+
+    document.getElementById('modalOverlay').style.display = 'flex';
+}
+function closeModal(){
+  document.getElementById('modalOverlay').style.display = 'none';
+}
+
+document.getElementById('modalOverlay').addEventListener('click',function(e){
+  if(e.target === this) closeModal();
+});
+
+/* ---------- SEARCH / FILTER ---------- */
+function applyFilters(){
+  var company = document.getElementById('fCompany').value.trim().toLowerCase();
+  var role = document.getElementById('fRole').value.trim().toLowerCase();
+  var location = document.getElementById('fLocation').value.trim().toLowerCase();
+  var status = document.getElementById('fStatus').value;
+
+  var filtered = drives.filter(function(drive){
+    var companyData = drive.company || {};
+
+    if(company && !(companyData.name || '').toLowerCase().includes(company)) return false;
+    if(role && !(drive.job_title || '').toLowerCase().includes(role)) return false;
+    if(location && !(companyData.location || '').toLowerCase().includes(location)) return false;
+    if(status && drive.status !== status) return false;
+
+    return true;
+  });
+
+  renderJobs(filtered);
+}
+
+document.getElementById('btnSearch').addEventListener('click',applyFilters);
+document.getElementById('btnClear').addEventListener('click',function(){
+  document.getElementById('fCompany').value = '';
+  document.getElementById('fRole').value = '';
+  document.getElementById('fLocation').value = '';
+  document.getElementById('fStatus').value = '';
+  renderJobs(drives);
+});
+
+/* ---------- RESPONSIVE (window width based, since inline CSS only) ---------- */
+function applyResponsive(){
+  var w = window.innerWidth;
+  var main = document.getElementById('main');
+  var sb = document.getElementById('sidebar');
+  var topbar = document.getElementById('mobileTopbar');
+  var jobGrid = document.getElementById('jobGrid');
+  var filterGrid = document.getElementById('filterGrid');
+  var statsGrid = document.getElementById('statsGrid');
+
+  if(w <= 640){
+    sb.style.display = 'none';
+    topbar.style.display = 'flex';
+    main.style.marginLeft = '0';
+    main.style.paddingTop = '60px';
+    jobGrid.style.gridTemplateColumns = '1fr';
+    filterGrid.style.gridTemplateColumns = '1fr';
+    statsGrid.style.gridTemplateColumns = 'repeat(2,1fr)';
+  } else if(w <= 1080){
+    sb.style.display = 'flex';
+    topbar.style.display = 'none';
+    main.style.marginLeft = '230px';
+    main.style.paddingTop = '0';
+    jobGrid.style.gridTemplateColumns = 'repeat(2,1fr)';
+    filterGrid.style.gridTemplateColumns = 'repeat(2,1fr)';
+    statsGrid.style.gridTemplateColumns = 'repeat(2,1fr)';
+  } else {
+    sb.style.display = 'flex';
+    topbar.style.display = 'none';
+    main.style.marginLeft = '230px';
+    main.style.paddingTop = '0';
+    jobGrid.style.gridTemplateColumns = 'repeat(3,1fr)';
+    filterGrid.style.gridTemplateColumns = 'repeat(4,1fr)';
+    statsGrid.style.gridTemplateColumns = 'repeat(4,1fr)';
+  }
+}
+window.addEventListener('resize', applyResponsive);
+applyResponsive();
+
+var menuOpen = false;
+document.getElementById('mobileMenuBtn').addEventListener('click', function(){
+  var sb = document.getElementById('sidebar');
+  menuOpen = !menuOpen;
+  if(menuOpen){
+    sb.style.display = 'flex';
+    sb.style.width = '230px';
+    setLabels('1','translateX(0)');
+  } else {
+    sb.style.display = 'none';
+  }
+});
+</script>
+</body>
+</html>
